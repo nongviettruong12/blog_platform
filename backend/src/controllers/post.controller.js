@@ -14,7 +14,7 @@ export const listPosts = async (req, res) => {
 
   const [items, total] = await Promise.all([
     Post.find(filter)
-      .populate("author", "username")
+      .populate("author", "userName")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit),
@@ -27,7 +27,7 @@ export const listPosts = async (req, res) => {
 export const getPost = async (req, res) => {
   const post = await Post.findById(req.params.id).populate(
     "author",
-    "username"
+    "userName"
   );
   if (!post || !post.published)
     return res.status(404).json({ message: "Not found" });

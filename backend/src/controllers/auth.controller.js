@@ -16,17 +16,16 @@ export const registerUser = async (req, res) => {
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
 
-  const { username, email, password } = req.body;
-  const exists = await User.findOne({ $or: [{ email }, { username }] });
+  const { userName, email, password } = req.body;
+  const exists = await User.findOne({ $or: [{ email }, { userName }] });
   if (exists)
-    return res.status(400).json({ message: "Email hoặc username đã tồn tại" });
+    return res.status(400).json({ message: "Email hoặc userName đã tồn tại" });
 
   const hash = await bcrypt.hash(password, 10);
   const user = await User.create({
-    username,
+    userName,
     email,
     password: hash,
-    role: "author",
   });
 
   const token = jwt.sign(
@@ -39,7 +38,7 @@ export const registerUser = async (req, res) => {
   res.status(201).json({
     user: {
       id: user._id,
-      username: user.username,
+      userName: user.userName,
       email: user.email,
       role: user.role,
     },
@@ -70,7 +69,7 @@ export const loginUser = async (req, res) => {
   res.json({
     user: {
       id: user._id,
-      username: user.username,
+      userName: user.userName,
       email: user.email,
       role: user.role,
     },
