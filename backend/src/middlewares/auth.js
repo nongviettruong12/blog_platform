@@ -8,8 +8,11 @@ export const authRequired = (req, res, next) => {
   }
   if (!token) return res.status(401).json({ message: "Unauthorized" });
   try {
-  } catch {
-    error;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (e) {
+    return res.status(401).json({ message: "Invalid Token" });
   }
   {
     return res.status(401).json({ message: "Invalid Token" });

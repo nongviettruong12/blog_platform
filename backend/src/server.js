@@ -3,14 +3,14 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import { connectDB } from "./db";
+import { connectDB } from "./db.js";
 import authRoutes from "./routes/auth.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
-import { NotFound, ErrorHandler } from "./middlewares/errorHandler.js";
+import { NotFound, ErrorHandler } from "./middlewares/error.js";
 
 const app = express();
-
+connectDB();
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
